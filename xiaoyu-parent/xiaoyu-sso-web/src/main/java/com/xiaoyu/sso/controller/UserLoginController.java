@@ -55,7 +55,7 @@ public class UserLoginController {
     IUserLoginService userLoginService;
 
     /**
-     * cookie 中 token 的 key
+     * cookie中的令牌token：存储用户名的key
      */
     @Value("${XY_TOKEN_KEY}")
     private String XY_TOKEN_KEY;

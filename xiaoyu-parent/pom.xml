@@ -20,6 +20,8 @@
     <module>xiaoyu-sso-web</module>
       <module>xiaoyu-cart</module>
     <module>xiaoyu-cart-web</module>
+    <module>xiaoyu-order</module>
+    <module>xiaoyu-order-web</module>
   </modules>
   <packaging>pom</packaging>
 
