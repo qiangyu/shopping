@@ -1,0 +1,3 @@
+com\xiaoyu\manager\service\ITestService.class
+com\xiaoyu\manager\service\IItemService.class
+com\xiaoyu\manager\service\IItemCatService.class

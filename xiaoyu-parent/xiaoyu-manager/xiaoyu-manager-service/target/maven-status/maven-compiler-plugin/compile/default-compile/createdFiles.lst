@@ -1,0 +1,6 @@
+com\xiaoyu\manager\service\jedis\impl\JedisClientCluster.class
+com\xiaoyu\manager\service\jedis\impl\JedisClientPool.class
+com\xiaoyu\manager\service\impl\ItemCatServiceImpl.class
+com\xiaoyu\manager\service\impl\TestServiceImpl.class
+com\xiaoyu\manager\service\jedis\IJedisClient.class
+com\xiaoyu\manager\service\impl\ItemServiceImpl.class

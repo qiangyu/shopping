@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+    <!--注解扫描-->
+    <context:component-scan base-package="com.xiaoyu.item.controller" />
+    <!--springmvc注解驱动-->
+    <mvc:annotation-driven />
+
+    <!--引入文件-->
+    <context:property-placeholder location="classpath:properties/resource.properties" />
+
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 使用dubbo发布服务 -->
+    <!-- 提供方应用信息，name：用于计算依赖关系，调用者是xiaoy-manager-web -->
+    <dubbo:application name="xiaoyu-item-web" />
+    <!--服务发送到zookeeper（注册中心）上（把服务注册到注册中心里面去）：ip + 端口 -->
+    <dubbo:registry protocol="zookeeper" address="192.168.25.128:2181" />
+    <!--interface：要调用哪个接口，此时要加入service接口的依赖   id：接口的名字首字母小写 -->
+    <!--表现层是Consumer: 调用远程服务的服务消费方。
+        业务层（服务层）是Provider: 暴露服务的服务提供方。
+    -->
+    <!--接收测试整合-->
+    <dubbo:reference interface="com.xiaoyu.manager.service.IItemService" id="iItemService" timeout="300000" />
+</beans>

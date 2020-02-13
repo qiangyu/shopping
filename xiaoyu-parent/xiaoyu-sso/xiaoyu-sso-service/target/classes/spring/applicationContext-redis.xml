@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+    <!--开启注解扫描-->
+    <!--<context:annotation-config> 是用于激活那些已经在spring容器里注册过的bean
+        （无论是通过xml的方式还是通过package sanning的方式）上面的注解。
+            它仅能够在已经在已经注册过的bean上面起作用。
+            对于没有在spring容器中注册的bean，它并不能执行任何操作。
+
+        <context:component-scan>除了具有<context:annotation-config>的功能之外，
+        <context:component-scan>还可以在指定的package下扫描以及注册javabean。
+    -->
+    <!--<context:component-scan base-package="com.xiaoyu.content.service" />-->
+<!--    <context:annotation-config />-->
+
+    <!--单机和集群两个冲突，，不可同时存在，否则spring无法注入-->
+
+    <!--单机的redis-->
+    <!--JedisPool连接池-->
+    <bean class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="host" value="192.168.25.128" />
+        <constructor-arg name="port" value="6379" />
+    </bean>
+    <!--单机的JedisClientPool实体类-->
+    <bean class="com.xiaoyu.sso.service.jedis.impl.JedisClientPool" />
+
+    <!--集群的redis-->
+    <!--JedisCluster对象。需要一个Set<HostAndPort>参数。Redis节点的列表-->
+<!--    <bean class="redis.clients.jedis.JedisCluster">-->
+<!--        <constructor-arg name="nodes" >-->
+<!--            <set>-->
+<!--                &lt;!&ndash;端口7001&ndash;&gt;-->
+<!--                <bean class="redis.clients.jedis.HostAndPort">-->
+<!--                    <constructor-arg name="host" value="192.168.25.128" />-->
+<!--                    <constructor-arg name="port" value="7001" />-->
+<!--                </bean>-->
+
+<!--                &lt;!&ndash;端口7002&ndash;&gt;-->
+<!--                <bean class="redis.clients.jedis.HostAndPort">-->
+<!--                    <constructor-arg name="host" value="192.168.25.128" />-->
+<!--                    <constructor-arg name="port" value="7002" />-->
+<!--                </bean>-->
+
+<!--                &lt;!&ndash;端口7003&ndash;&gt;-->
+<!--                <bean class="redis.clients.jedis.HostAndPort">-->
+<!--                    <constructor-arg name="host" value="192.168.25.128" />-->
+<!--                    <constructor-arg name="port" value="7003" />-->
+<!--                </bean>-->
+
+<!--                &lt;!&ndash;端口7004&ndash;&gt;-->
+<!--                <bean class="redis.clients.jedis.HostAndPort">-->
+<!--                    <constructor-arg name="host" value="192.168.25.128" />-->
+<!--                    <constructor-arg name="port" value="7004" />-->
+<!--                </bean>-->
+
+<!--                &lt;!&ndash;端口7005&ndash;&gt;-->
+<!--                <bean class="redis.clients.jedis.HostAndPort">-->
+<!--                    <constructor-arg name="host" value="192.168.25.128" />-->
+<!--                    <constructor-arg name="port" value="7005" />-->
+<!--                </bean>-->
+
+<!--                &lt;!&ndash;端口7006&ndash;&gt;-->
+<!--                <bean class="redis.clients.jedis.HostAndPort">-->
+<!--                    <constructor-arg name="host" value="192.168.25.128" />-->
+<!--                    <constructor-arg name="port" value="7006" />-->
+<!--                </bean>-->
+<!--            </set>-->
+<!--        </constructor-arg>-->
+<!--    </bean>-->
+    <!--集群的JedisClientCluster实体类-->
+<!--    <bean class="JedisClientCluster" />-->
+
+</beans>

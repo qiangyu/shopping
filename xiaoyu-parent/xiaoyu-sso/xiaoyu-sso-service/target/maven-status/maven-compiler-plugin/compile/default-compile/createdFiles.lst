@@ -1,0 +1,5 @@
+com\xiaoyu\sso\service\jedis\impl\JedisClientCluster.class
+com\xiaoyu\sso\service\impl\UserRegisterServiceImpl.class
+com\xiaoyu\sso\service\impl\UserLoginServiceImpl.class
+com\xiaoyu\sso\service\jedis\IJedisClient.class
+com\xiaoyu\sso\service\jedis\impl\JedisClientPool.class

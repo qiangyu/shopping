@@ -1,0 +1,12 @@
+com\xiaoyu\manager\mapper\TbContentMapper.class
+com\xiaoyu\manager\mapper\TbItemParamMapper.class
+com\xiaoyu\manager\mapper\TbOrderItemMapper.class
+com\xiaoyu\manager\mapper\TbItemDescMapper.class
+com\xiaoyu\manager\mapper\TbItemMapper.class
+com\xiaoyu\manager\mapper\TbOrderShippingMapper.class
+com\xiaoyu\manager\mapper\TbOrderMapper.class
+com\xiaoyu\manager\mapper\TbContentCategoryMapper.class
+com\xiaoyu\manager\mapper\TbUserMapper.class
+com\xiaoyu\manager\mapper\TbItemCatMapper.class
+com\xiaoyu\manager\mapper\ITestMapper.class
+com\xiaoyu\manager\mapper\TbItemParamItemMapper.class

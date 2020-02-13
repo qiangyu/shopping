@@ -1,0 +1,3 @@
+com\xiaoyu\search\dao\impl\SearchDaoImpl.class
+com\xiaoyu\search\dao\ISearchDao.class
+com\xiaoyu\search\mapper\ISearchItemMapper.class

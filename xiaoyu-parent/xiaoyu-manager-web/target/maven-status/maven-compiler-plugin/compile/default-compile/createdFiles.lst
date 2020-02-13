@@ -1,0 +1,9 @@
+com\xiaoyu\manager\util\FastDFSClient.class
+com\xiaoyu\manager\controller\ItemCatController.class
+com\xiaoyu\manager\controller\TestController.class
+com\xiaoyu\manager\controller\ItemController.class
+com\xiaoyu\manager\controller\PageController.class
+com\xiaoyu\manager\controller\PictureController.class
+com\xiaoyu\manager\controller\ContentCategoryController.class
+com\xiaoyu\manager\controller\ContentController.class
+com\xiaoyu\manager\controller\SearchItemController.class
