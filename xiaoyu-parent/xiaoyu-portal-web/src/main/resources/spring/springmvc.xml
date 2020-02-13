@@ -32,6 +32,7 @@
     <!--表现层是Consumer: 调用远程服务的服务消费方。
         业务层（服务层）是Provider: 暴露服务的服务提供方。
     -->
-    <!--接收测试整合-->
+    <!--接收后台内容处理服务-->
     <dubbo:reference interface="com.xiaoyu.content.service.IContentService" id="iContentService" timeout="300000" />
+
 </beans>
