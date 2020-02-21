@@ -83,6 +83,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         // 如果 token 存在，调用 SSO 服务查看用户信息 --》看用户是否已经过期
         XiaoyuResult result = userLoginService.getUserByToken(token);
+
         if (result.getStatus() != 200) {
             // 用户已经过期 --》重定向到登录页面
             httpServletResponse.sendRedirect(SSO_URL + "/page/login?redirect=" + httpServletRequest.getRequestURL());

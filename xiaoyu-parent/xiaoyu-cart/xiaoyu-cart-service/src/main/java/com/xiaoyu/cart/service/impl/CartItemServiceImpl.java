@@ -38,6 +38,12 @@ import java.util.Set;
 
 /**
  * 购物车相关的实现类
+ * 存在问题：
+ *      每个方法都有大量重复的代码
+ *      当没登录时加添加了商品到购物车（购物车的商品列表存在 cookie 里）
+ *      登录的时候没将 cookie 里的商品列表存入到redis里面，导致登录后 cookie 里的商品列表丢失
+ *      所以，当没登录时，把商品加入了购物车，器购物车结算时，调到订单页面前需要登录，登录完调到订单页面显示的是登录时的购物车列表，而不是 没登录时加到购物车选中的列表
+ *      以及好像购物车页面默认是选中全部商品
  *
  * @author xiaoyu
  * @date 2020/2/12 16:32
@@ -58,7 +64,7 @@ public class CartItemServiceImpl implements ICartItemService {
     private String XY_CART_ITEM_KEY;
 
     /**
-     * 根据商品的ID从redis中查询购物车商品的信息
+     * 根据用户ID和商品的ID从redis中查询购物车商品的信息
      *
      * @param userId 哪一个用户的购物车（用户id）
      * @param item   哪一个商品（商品id）
@@ -162,6 +168,22 @@ public class CartItemServiceImpl implements ICartItemService {
     @Override
     public XiaoyuResult deleteCartItemByUserIdAndItemId(Long userId, Long itemId) {
         jedisClient.hdel(XY_CART_ITEM_KEY + ":" + userId, itemId + "");
+        return XiaoyuResult.ok();
+    }
+
+    /**
+     * 根据用户 id 删除购物车所有商品
+     * @param userId 用户 id
+     * @return 操作结果
+     */
+    @Override
+    public XiaoyuResult deleteCartItemAllByUserId(Long userId) {
+        // 根据用户名从redis中查询购物车商品列表
+        List<TbItem> items = this.queryCartListByUserId(userId);
+        // 循环一个个删除
+        for (TbItem item : items) {
+            this.deleteCartItemByUserIdAndItemId(userId, item.getId());
+        }
         return XiaoyuResult.ok();
     }
 }

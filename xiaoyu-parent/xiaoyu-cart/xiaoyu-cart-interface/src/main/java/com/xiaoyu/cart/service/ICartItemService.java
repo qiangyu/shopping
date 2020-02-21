@@ -15,7 +15,7 @@ import java.util.List;
 public interface ICartItemService {
 
     /**
-     * 根据商品的ID从redis中查询购物车商品的信息
+     * 根据用户ID和商品的ID从redis中查询购物车商品的信息
      * @param userId 哪一个用户的购物车（用户id）
      * @param item 哪一个商品（商品id）
      * @param num 购买商品的数量
@@ -54,5 +54,12 @@ public interface ICartItemService {
      * @return 返回操作结果
      */
     XiaoyuResult deleteCartItemByUserIdAndItemId(Long userId, Long itemId);
+
+    /**
+     * 根据用户 id 删除购物车所有商品
+     * @param userId 用户 id
+     * @return 操作结果
+     */
+    XiaoyuResult deleteCartItemAllByUserId(Long userId);
 
 }

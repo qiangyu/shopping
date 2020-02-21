@@ -43,8 +43,9 @@
     -->
     <!--接收SSO服务：调用SSO的服务获取用户信息-->
     <dubbo:reference interface="com.xiaoyu.sso.service.IUserLoginService" id="iUserLoginService" timeout="300000" />
-
     <!--接收处理购物车服务：调用购物车服务，从 redis 中获取该用户的购物车商品列表-->
     <dubbo:reference interface="com.xiaoyu.cart.service.ICartItemService" id="iCartItemService" timeout="300000" />
+    <!--接收创建订单服务-->
+    <dubbo:reference interface="com.xiaoyu.order.service.IOrderService" id="iOrderService" timeout="300000" />
 
 </beans>

@@ -31,6 +31,6 @@
         业务层（服务层）是Provider: 暴露服务的服务提供方。
     -->
     <!--测试-->
-<!--    <dubbo:service interface="com.xiaoyu.manager.service.ITestService" ref="testServiceImpl" timeout="300000" />-->
+    <dubbo:service interface="com.xiaoyu.order.service.IOrderService" ref="orderServiceImpl" timeout="300000" />
 
 </beans>
