@@ -42,9 +42,10 @@
     <!--表现层是Consumer: 调用远程服务的服务消费方。
         业务层（服务层）是Provider: 暴露服务的服务提供方。
     -->
-    <!--接收校验用户注册的服务-->
+    <!--引入单点登录服务：校验用户注册-->
     <dubbo:reference interface="com.xiaoyu.sso.service.IUserRegisterService" id="iUserRegisterService" timeout="300000" />
-    <!--接收登录的服务-->
+
+    <!--引入单点登录服务：校验用户登录-->
     <dubbo:reference interface="com.xiaoyu.sso.service.IUserLoginService" id="iUserLoginService" timeout="300000" />
 
 </beans>

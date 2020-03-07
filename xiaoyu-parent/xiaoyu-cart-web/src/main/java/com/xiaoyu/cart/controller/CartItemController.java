@@ -1,24 +1,24 @@
 package com.xiaoyu.cart.controller;
 
 /**
- *                     .::::.
- *                   .::::::::.
- *                  :::::::::::    佛主保佑、永无Bug
- *              ..:::::::::::'
- *            '::::::::::::'
- *              .::::::::::
- *         '::::::::::::::..
- *              ..::::::::::::.
- *            ``::::::::::::::::
- *             ::::``:::::::::'        .:::.
- *            ::::'   ':::::'       .::::::::.
- *          .::::'      ::::     .:::::::'::::.
- *         .:::'       :::::  .:::::::::' ':::::.
- *        .::'        :::::.:::::::::'      ':::::.
- *       .::'         ::::::::::::::'         ``::::.
- *   ...:::           ::::::::::::'              ``::.
- *  ```` ':.          ':::::::::'                  ::::..
- *                     '.:::::'                    ':'````..
+ * .::::.
+ * .::::::::.
+ * :::::::::::    佛主保佑、永无Bug
+ * ..:::::::::::'
+ * '::::::::::::'
+ * .::::::::::
+ * '::::::::::::::..
+ * ..::::::::::::.
+ * ``::::::::::::::::
+ * ::::``:::::::::'        .:::.
+ * ::::'   ':::::'       .::::::::.
+ * .::::'      ::::     .:::::::'::::.
+ * .:::'       :::::  .:::::::::' ':::::.
+ * .::'        :::::.:::::::::'      ':::::.
+ * .::'         ::::::::::::::'         ``::::.
+ * ...:::           ::::::::::::'              ``::.
+ * ```` ':.          ':::::::::'                  ::::..
+ * '.:::::'                    ':'````..
  */
 
 import com.xiaoyu.cart.service.ICartItemService;
@@ -45,11 +45,11 @@ import java.util.List;
 /**
  * 处理购物车
  * 存在问题：
- *      每个方法都有大量重复的代码
- *      当没登录时加添加了商品到购物车（购物车的商品列表存在 cookie 里）
- *      登录的时候没将 cookie 里的商品列表存入到redis里面，导致登录后 cookie 里的商品列表丢失
- *      所以，当没登录时，把商品加入了购物车，器购物车结算时，调到订单页面前需要登录，登录完调到订单页面显示的是登录时的购物车列表，而不是 没登录时加到购物车选中的列表
- *      以及好像购物车页面默认是选中全部商品
+ * 每个方法都有大量重复的代码
+ * 当没登录时加添加了商品到购物车（购物车的商品列表存在 cookie 里）
+ * 登录的时候没将 cookie 里的商品列表存入到redis里面，导致登录后 cookie 里的商品列表丢失
+ * 所以，当没登录时，把商品加入了购物车，器购物车结算时，调到订单页面前需要登录，登录完调到订单页面显示的是登录时的购物车列表，而不是 没登录时加到购物车选中的列表
+ * 以及好像购物车页面默认是选中全部商品
  *
  * @author xiaoyu
  * @date 2020/2/12 21:25
@@ -92,7 +92,7 @@ public class CartItemController {
     /**
      * 根据商品的ID，数量加购物车，并展示 “商品已成功加入购物车！” 的页面（cartSuccess.jsp）
      *
-     * @param itemId   哪一个商品（商品id）
+     * @param itemId 哪一个商品（商品id）
      * @param num    购买商品的数量
      * @return cartSuccess.jsp页面
      */
@@ -101,6 +101,12 @@ public class CartItemController {
                           HttpServletRequest request, HttpServletResponse response) {
         // 从cookie中获取 token（key），用来从redis取出用户的信息
         String token = CookieUtils.getCookieValue(request, "XY_TOKEN");
+
+        // 表示用户不存在，说明用户没登录。将商品信息存放于 cookie 中
+        if (token == null) {
+            this.addCookieCartItem(itemId, num, request, response);
+            return "cartSuccess";
+        }
 
         // 根据token调用SSO服务，获取用户的信息
         XiaoyuResult result = userLoginService.getUserByToken(token);
@@ -114,16 +120,15 @@ public class CartItemController {
             // 添加购物车的方法，将数据添加到redis中
             cartItemService.addCartItem(userId, item, num);
         } else {
-            // 表示用户不存在，说明用户没登录。将商品信息存放于 cookie 中
+            // 表示用户登录过期。将商品信息存放于 cookie 中
             this.addCookieCartItem(itemId, num, request, response);
         }
         return "cartSuccess";
     }
 
-
-
     /**
      * 购物车展示列表的页面（cart.jsp）
+     *
      * @param request request
      * @return
      */
@@ -132,29 +137,37 @@ public class CartItemController {
         // 判断用户是否登录
         // 从cookie中获取 token（key），用来从redis取出用户的信息
         String token = CookieUtils.getCookieValue(request, "XY_TOKEN");
-
         // 根据token调用SSO服务，获取用户的信息
         XiaoyuResult result = userLoginService.getUserByToken(token);
+        // 从 cookie 中获取购物车信息
+        List<TbItem> cookieItems = this.getCartList(request);
         // 如果用户已登录
         if (result.getStatus() == 200) {
-            // 用户已登录
+            // 获取用户信息 user
             TbUser user = (TbUser) result.getData();
+            // 购物车同步：将 cookie 中的商品添加到redis
+            if (cookieItems != null && cookieItems.size() > 0) {
+                for (TbItem cookieItem : cookieItems) {
+                    // 添加购物车的方法，将数据添加到redis中
+                    cartItemService.addCartItem(user.getId(), cookieItem, cookieItem.getNum());
+                }
+            }
             // 查询出购物车所有的商品数据
-            List<TbItem> items = cartItemService.queryCartListByUserId(user.getId());
-            request.setAttribute("cartList", items);
+            List<TbItem> redisItems = cartItemService.queryCartListByUserId(user.getId());
+            request.setAttribute("cartList", redisItems);
         } else {
             // 用户没登录
-            List<TbItem> items = this.getCartList(request);
-            request.setAttribute("cartList", items);
+            request.setAttribute("cartList", cookieItems);
         }
         return "cart";
     }
 
     /**
      * 根据用户的ID和商品的ID进行更新购物车商品数量
-     * @param itemId 商品id
-     * @param num 商品数量
-     * @param request request
+     *
+     * @param itemId   商品id
+     * @param num      商品数量
+     * @param request  request
      * @param response response
      * @return 返回操作结果
      */
@@ -183,8 +196,9 @@ public class CartItemController {
 
     /**
      * 根据商品的id和用户的id进行删除购物车商品
-     * @param itemId 商品id
-     * @param request request
+     *
+     * @param itemId   商品id
+     * @param request  request
      * @param response response
      * @return 重定向：redirect:/cart/cart.html
      */
@@ -213,9 +227,10 @@ public class CartItemController {
 
     /**
      * 将商品添加到 cookie
-     * @param itemId 商品id
-     * @param num 商品数量
-     * @param request request
+     *
+     * @param itemId   商品id
+     * @param num      商品数量
+     * @param request  request
      * @param response response
      */
     private void addCookieCartItem(Long itemId, Integer num, HttpServletRequest request, HttpServletResponse response) {
@@ -244,6 +259,7 @@ public class CartItemController {
 
     /**
      * 从cookie中获取商品列表
+     *
      * @param request request
      * @return 返回商品列表信息
      */
@@ -261,9 +277,10 @@ public class CartItemController {
 
     /**
      * 通过cookie，更新用户的购物车：修改购物车商品数量
-     * @param itemId 商品id
-     * @param num 加购物车商品数量
-     * @param request request
+     *
+     * @param itemId   商品id
+     * @param num      加购物车商品数量
+     * @param request  request
      * @param response response
      */
     private void updateCookieCartItemNum(Long itemId, Integer num, HttpServletRequest request, HttpServletResponse response) {
@@ -280,12 +297,13 @@ public class CartItemController {
 
     /**
      * 如果列表中有商品的id和itemId一致 ，说明商品找到，更新商品的数量
-     * @param items 商品列表
+     *
+     * @param items  商品列表
      * @param itemId 价购物车的商品id
-     * @param num 价购物的商品数量
+     * @param num    价购物的商品数量
      * @return 返回在商品列表中是否找到 传递过来的商品（itemId）
-     *          找到：true
-     *          找到：false
+     * 找到：true
+     * 找到：false
      */
     private boolean updateItemsNum(List<TbItem> items, Long itemId, Integer num) {
         // 判断，要添加的商品是否存在于cookie的商品列表中
@@ -303,6 +321,7 @@ public class CartItemController {
 
     /**
      * 通过cookie，更新用户的购物车：删除购物车的商品
+     *
      * @param itemId
      * @param request
      * @param response

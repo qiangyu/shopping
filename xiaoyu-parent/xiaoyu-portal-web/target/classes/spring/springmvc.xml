@@ -24,7 +24,7 @@
     </bean>
 
     <!-- 使用dubbo发布服务 -->
-    <!-- 提供方应用信息，name：用于计算依赖关系，调用者是xiaoy-manager-web -->
+    <!-- 提供方应用信息，name：用于计算依赖关系，调用者是xiaoyu-portal-web -->
     <dubbo:application name="xiaoyu-portal-web" />
     <!--服务发送到zookeeper（注册中心）上（把服务注册到注册中心里面去）：ip + 端口 -->
     <dubbo:registry protocol="zookeeper" address="192.168.25.128:2181" />

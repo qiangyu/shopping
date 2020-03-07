@@ -109,7 +109,7 @@ public class UserLoginServiceImpl implements IUserLoginService {
         String token = UUID.randomUUID().toString();
         // 存放用户数据到redis中 ，用户信息等存放在 redis   （key：token  value：用户的JSON数据）
         // 使用jedis客户端，为了管理方便，给 key 加一个前缀："xxx:token"
-        // 设置密码为null
+        // 设置密码为null，防止密码泄露
         user.setPassword(null);
         jedisClient.set(USER_INFO + ":" + token, JsonUtils.objectToJson(user));
         // 设置token有效期来模拟session

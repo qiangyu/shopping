@@ -57,7 +57,7 @@ public class UserRegisterController {
     public XiaoyuResult checkData(@PathVariable String param, @PathVariable Integer type) {
         // 引入服务
         // 注入
-        // 调用方法
+        // 调用方法，并返回校验结果
         return userRegisterService.checkData(param, type);
     }
 
@@ -69,7 +69,7 @@ public class UserRegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public XiaoyuResult register(TbUser user) {
-        // 调用方法
+        // 调用方法，并返回校验结果
         return userRegisterService.register(user);
     }
 

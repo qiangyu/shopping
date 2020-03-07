@@ -149,7 +149,7 @@
 				//检查用户是否已经被占用
 				$.ajax({
 	            	url : REGISTER.param.surl + "/user/check/"+escape($("#regName").val())+"/1?r=" + Math.random(),
-	            	success : function(data) {
+                        success : function(data) {
 	            		if (data.data) {
 	            			//检查手机号是否存在
 	            			$.ajax({
@@ -172,16 +172,16 @@
 	            	
 		},
 		doSubmit:function() {
-			//$("#personRegForm").serialize()
-			$.post("/user/register",$("#personRegForm").serialize(), function(data){
-				if(data.status == 200){
-					alert('用户注册成功，请登录！');
-					REGISTER.login();
-				} else {
-					alert("注册失败！");
-				}
-			});
-		},
+            //$("#personRegForm").serialize()
+            $.post("/user/register",$("#personRegForm").serialize(), function(data){
+                if(data.status == 200){
+                    alert('用户注册成功，请登录！');
+                    REGISTER.login();
+                } else {
+                    alert("注册失败！");
+                }
+            });
+        },
 		login:function() {
 			 location.href = "/page/login";
 			 return false;

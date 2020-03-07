@@ -80,44 +80,44 @@ public class PageController {
      * @author xiaoyu
      * @description 展示首页 
      * @date 19:48 2020/1/31
-     * @param  
+     * @param model
      * @return java.lang.String 
      **/
     @RequestMapping("/index")
     public String showIndex(Model model) {
         // 引入服务
         // 注入服务
-        // 根据内容分类的id，查询该内容列表
+        // 根据模块分类的id，查询模块的内容列表
+        this.loadContent(model);
+        return "index";
+    }
+
+    /**
+     * 加载首页模块
+     * @param model
+     */
+    private void loadContent(Model model) {
+        // 根据模块分类的id，查询该内容列表
         List<TbContent> list = contentService.getContentListByCatId(categoryId);
         // 转成自定义的POJO列表(封装到IndexCategoryAd类中)
-
-//        private String src;
-//        private String srcB;
-//        private String height;
-//        private String heightB;
-//        private String width;
-//        private String widthB;
-//        private String alt;
-//        private String href;
-
         List<IndexCategoryAd> nodes = new ArrayList<>();
         for (TbContent content : list) {
             IndexCategoryAd ad = new IndexCategoryAd();
-            // 标题
+            // 图片的标题
             ad.setAlt(content.getSubTitle());
 
-            // 大广告位图片的高
+            // 轮播图图片的高
             ad.setHeight(height);
             ad.setHeightB(heightB);
 
-            // url
+            // 图片的 url
             ad.setHref(content.getUrl());
 
-            // 图片
+            // 轮播图 图片
             ad.setSrc(content.getPic());
             ad.setSrcB(content.getPic2());
 
-            // 大广告位图片的宽
+            // 轮播图图片的宽
             ad.setWidth(width);
             ad.setWidthB(widthB);
 
@@ -125,7 +125,6 @@ public class PageController {
         }
         // 传递数据给前端  JsonUtils.objectToJson(nodes)将对象转为json数据
         model.addAttribute("ad1", JsonUtils.objectToJson(nodes));
-        return "index";
     }
 
 }
